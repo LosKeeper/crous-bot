@@ -1,2 +1,5 @@
+/.vscode
 config.py
-__pychache__/
+/__pycache__/
+*.sh
+*.log
