@@ -3,7 +3,13 @@ import certifi
 from io import BytesIO
 from datetime import datetime
 
+# URL of the menu
 from config import URL
+
+# Force tu use english month
+import locale
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+
 
 def EN_to_FR(month) :
 
@@ -42,7 +48,7 @@ def get_html() :
     # Set the User-Agent
     c.setopt(c.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36')
 
-
+    # Use certifi to verify the certificate
     c.setopt(c.CAINFO, certifi.where())
 
     # Perform a file transfer
@@ -78,7 +84,7 @@ def parse_html(buffer) :
 
     # Remove the html tags
     buffer = buffer.replace("<span class=\"name\">", "")        # End of the buffer
-    buffer = buffer.replace("</span>", " : \n\n")               # After "SALLE ..."
+    buffer = buffer.replace("</span>", " : \n")               # After "SALLE ..."
     buffer = buffer.replace("<ul class=\"liste-plats\">", "")   # After "SALLE ..."
     buffer = buffer.replace("<li></li>", "")                    # Missing dish
     buffer = buffer.replace("<li>", "\t")                       # Before each dish
@@ -87,13 +93,15 @@ def parse_html(buffer) :
     buffer = buffer.replace("<div>", "")                        # Enf of buffer
     buffer = buffer.replace("</div>", "")                       # End of buffer
 
-    # Get only the menu concerning the students
+    # Get only the menu concerning the students only
     buffer = buffer.split("SALLE")
     str = ""
     for i in range(1, len(buffer)) :
         if buffer[i].find("ETUDIANTS") != -1 :
             str += "SALLE" + buffer[i]
+
+    # Remove the ":" in a room content
+    if "chaude : " in str :
+        str = str.replace("chaude : ", "chaude \n\t")
     
     return str
-
-print(parse_html(get_html()))

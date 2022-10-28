@@ -17,7 +17,7 @@ pip install -r requirements.txt
 You need to create a file named `config.py` in the root directory of the project. This file will contain all the configuration of the bot. Here is an example of a configuration file :
 ```py
 URL     = "<The URL of the website>"
-Token   = "<The token of the bot>"
+TOKEN   = "<The token of the bot>"
 ```
 
 > **Note:** The URL must be an URL of a Crous website. If you want to use another website, you will need to modify the code. 
