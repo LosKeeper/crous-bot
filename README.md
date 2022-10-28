@@ -1,1 +1,40 @@
-# discord-menu-bot
+# Discord Menu Bot Crous
+A simple bot that allows you to create menus in discord.
+
+1. [Installation](#installation)
+2. [Configuration](#configuration)
+3. [Usage](#usage)
+4. [List of commands](#list-of-commands)
+5. [Contributing](#contributing)
+6. [TODO](#todo)
+
+## Installation
+You first need to install all the required packages. You can do this by running the following command :
+```bash
+pip install -r requirements.txt
+```
+## Configuration
+You need to create a file named `config.py` in the root directory of the project. This file will contain all the configuration of the bot. Here is an example of a configuration file :
+```py
+URL     = "<The URL of the website>"
+Token   = "<The token of the bot>"
+```
+
+> **Note:** The URL must be an URL of a Crous website. If you want to use another website, you will need to modify the code. 
+
+## Usage
+You can run the bot by running the following command :
+```bash
+python main.py
+```
+The bot will then start and you can use it by typing `/menu` in a discord channel to get the list of all the available menus for the day.
+
+## List of commands
+| Command | Description                                          |
+| ------- | ---------------------------------------------------- |
+| `/menu` | Get the list of all the available menus for the day. |
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## TODO
