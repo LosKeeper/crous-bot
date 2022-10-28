@@ -6,32 +6,40 @@ from datetime import datetime
 # URL of the menu
 from config import URL
 
-# Force tu use english month
-import locale
-locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
+def EN_to_FR(month):
+    """Convert the english month to french month
 
-def EN_to_FR(month) :
+    Args:
+        month (str): The english month
 
-    # Convert the month from english to french
+    Returns:
+        str: The french month
+    """
     months = {
-        "January" : "janvier",
-        "February" : "février",
-        "March" : "mars",
-        "April" : "avril",
-        "May" : "mai",
-        "June" : "juin",
-        "July" : "juillet",
-        "August" : "août",
-        "September" : "septembre",
-        "October" : "octobre",
-        "November" : "novembre",
-        "December" : "décembre"
+        "January": "janvier",
+        "February": "février",
+        "March": "mars",
+        "April": "avril",
+        "May": "mai",
+        "June": "juin",
+        "July": "juillet",
+        "August": "août",
+        "September": "septembre",
+        "October": "octobre",
+        "November": "novembre",
+        "December": "décembre"
     }
 
     return months[month]
 
-def get_html() :
+
+def get_html():
+    """Get the html code of the menu webpage
+
+    Returns:
+        str: The html code
+    """
 
     # Create a buffer to store the response
     buffer = BytesIO()
@@ -62,7 +70,16 @@ def get_html() :
 
     return body
 
-def parse_html(buffer) :
+
+def parse_html(buffer):
+    """Parse the html code to get the menu
+
+    Args:
+        buffer (str): The html code
+
+    Returns:
+        str: The menu formatted from the current day
+    """
 
     # Get the date
     day = datetime.now().strftime("%d")
@@ -83,25 +100,27 @@ def parse_html(buffer) :
     buffer = buffer[:end]
 
     # Remove the html tags
-    buffer = buffer.replace("<span class=\"name\">", "")        # End of the buffer
-    buffer = buffer.replace("</span>", " : \n")               # After "SALLE ..."
-    buffer = buffer.replace("<ul class=\"liste-plats\">", "")   # After "SALLE ..."
-    buffer = buffer.replace("<li></li>", "")                    # Missing dish
-    buffer = buffer.replace("<li>", "\t")                       # Before each dish
-    buffer = buffer.replace("</li>", "\n")                      # After each dish
-    buffer = buffer.replace("</ul>", "\n")                      # End of the room menu
-    buffer = buffer.replace("<div>", "")                        # Enf of buffer
-    buffer = buffer.replace("</div>", "")                       # End of buffer
+    buffer = buffer.replace("<span class=\"name\">",
+                            "")
+    buffer = buffer.replace("</span>", " : \n")
+    buffer = buffer.replace("<ul class=\"liste-plats\">",
+                            "")
+    buffer = buffer.replace("<li></li>", "")
+    buffer = buffer.replace("<li>", "\t")
+    buffer = buffer.replace("</li>", "\n")
+    buffer = buffer.replace("</ul>", "\n")
+    buffer = buffer.replace("<div>", "")
+    buffer = buffer.replace("</div>", "")
 
     # Get only the menu concerning the students only
     buffer = buffer.split("SALLE")
     str = ""
-    for i in range(1, len(buffer)) :
-        if buffer[i].find("ETUDIANTS") != -1 :
+    for i in range(1, len(buffer)):
+        if buffer[i].find("ETUDIANTS") != -1:
             str += "SALLE" + buffer[i]
 
     # Remove the ":" in a room content
-    if "chaude : " in str :
-        str = str.replace("chaude : ", "chaude \n\t")
-    
+    if "chaude : " in str:
+        str = str.replace("chaude : ", "chaude -> ")
+
     return str
