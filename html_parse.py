@@ -66,11 +66,9 @@ def parse_html(buffer) :
 
     # Find the html element that concern the menu of the day
     menu = buffer.find(date)
+    buffer = buffer[menu:]
 
-    # Get the 12 lines after the date
-    buffer = buffer[menu:menu+2000]
-
-    # Get the menu
+    # Get the menu of the lunch
     menu = buffer.find("Déjeuner")
     buffer = buffer[menu+45:]
 
@@ -79,15 +77,23 @@ def parse_html(buffer) :
     buffer = buffer[:end]
 
     # Remove the html tags
-    buffer = buffer.replace("<span class=\"name\">", "")
-    buffer = buffer.replace("</span>", "\n")
-    buffer = buffer.replace("<ul class=\"liste-plats\">", "")
-    buffer = buffer.replace("<li>", "\t")
-    buffer = buffer.replace("</li>", "\n")
-    buffer = buffer.replace("</ul>", "")
-    buffer = buffer.replace("<div>", "")
-    buffer = buffer.replace("</div>", "")
+    buffer = buffer.replace("<span class=\"name\">", "")        # End of the buffer
+    buffer = buffer.replace("</span>", " : \n\n")               # After "SALLE ..."
+    buffer = buffer.replace("<ul class=\"liste-plats\">", "")   # After "SALLE ..."
+    buffer = buffer.replace("<li></li>", "")                    # Missing dish
+    buffer = buffer.replace("<li>", "\t")                       # Before each dish
+    buffer = buffer.replace("</li>", "\n")                      # After each dish
+    buffer = buffer.replace("</ul>", "\n")                      # End of the room menu
+    buffer = buffer.replace("<div>", "")                        # Enf of buffer
+    buffer = buffer.replace("</div>", "")                       # End of buffer
 
-    print("Menu: " + buffer)
+    # Get only the menu concerning the students
+    buffer = buffer.split("SALLE")
+    str = ""
+    for i in range(1, len(buffer)) :
+        if buffer[i].find("ETUDIANTS") != -1 :
+            str += "SALLE" + buffer[i]
+    
+    return str
 
-parse_html(get_html())
+print(parse_html(get_html()))
