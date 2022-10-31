@@ -30,7 +30,8 @@ async def _menu(ctx: interactions.CommandContext):
     await ctx.send(embeds=embed)
 
 
-@ bot.event
+# Print menu at startup
+@bot.event
 async def on_start():
     # When bot is ready send menu to the channel
     day = datetime.now().strftime("%d")

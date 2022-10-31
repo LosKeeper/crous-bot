@@ -123,4 +123,8 @@ def parse_html(buffer):
     if "chaude : " in str:
         str = str.replace("chaude : ", "chaude -> ")
 
+    # Check if the menu is empty
+    if str == "":
+        str = "Pas de menu disponible pour aujourd'hui !"
+
     return str
