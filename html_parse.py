@@ -6,6 +6,9 @@ from datetime import datetime
 # URL of the menu
 from config import URL
 
+# Use to convert the time
+delta_time = 1
+
 
 def EN_to_FR(month):
     """Convert the english month to french month
@@ -83,9 +86,21 @@ def parse_html(buffer):
 
     # Get the date
     day = datetime.now().strftime("%d")
+
+    if day[0] == "0":
+        day = day[1]
+
     month = datetime.now().strftime("%B")
     month = EN_to_FR(month)
-    date = day + " " + month
+
+    # If the time is after 14h, the menu is for the next day
+    hour = datetime.now().strftime("%H")
+    if int(hour)+delta_time >= 14:
+        day_int = int(day)+1
+    else:
+        day_int = int(day)
+
+    date = "%s" % day_int + " "+month
 
     # Find the html element that concern the menu of the day
     menu = buffer.find(date)

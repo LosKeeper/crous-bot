@@ -17,11 +17,23 @@ bot = interactions.Client(token=TOKEN,
 # Define the command /menu
 @bot.command(name='menu', description='Print today\'s menu')
 async def _menu(ctx: interactions.CommandContext):
+   # Get the date
     day = datetime.now().strftime("%d")
+
+    if day[0] == "0":
+        day = day[1]
+
     month = datetime.now().strftime("%B")
     month = EN_to_FR(month)
-    year = datetime.now().strftime("%Y")
-    date = day + " " + month + " " + year
+
+    # If the time is after 14h, the menu is for the next day
+    hour = datetime.now().strftime("%H")
+    if int(hour)+delta_time >= 14:
+        day_int = int(day)+1
+    else:
+        day_int = int(day)
+
+    date = "%s" % day_int + " "+month
 
     embed = interactions.Embed(title="Menu RU Illkirch",
                                description="__**"+date+"**__"+"\n```yaml\n"+parse_html(get_html())+"```", color=0x00ff00)
@@ -34,11 +46,23 @@ async def _menu(ctx: interactions.CommandContext):
 @bot.event
 async def on_start():
     # When bot is ready send menu to the channel
+    # Get the date
     day = datetime.now().strftime("%d")
+
+    if day[0] == "0":
+        day = day[1]
+
     month = datetime.now().strftime("%B")
     month = EN_to_FR(month)
-    year = datetime.now().strftime("%Y")
-    date = day + " " + month + " " + year
+
+    # If the time is after 14h, the menu is for the next day
+    hour = datetime.now().strftime("%H")
+    if int(hour)+delta_time >= 14:
+        day_int = int(day)+1
+    else:
+        day_int = int(day)
+
+    date = "%s" % day_int + " "+month
     channel = await bot._http.get_channel(CHANNEL)
     channel = interactions.Channel(**channel, _client=bot._http)
     await channel.purge(amount=10)
