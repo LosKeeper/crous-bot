@@ -3,9 +3,6 @@ import certifi
 from io import BytesIO
 from datetime import datetime
 
-# URL of the menu
-from config import URL
-
 # Use to convert the time
 delta_time = 1
 
@@ -37,7 +34,7 @@ def EN_to_FR(month):
     return months[month]
 
 
-def get_html():
+def get_html(URL):
     """Get the html code of the menu webpage
 
     Returns:
@@ -102,6 +99,13 @@ def parse_html(buffer):
 
     date = "%s" % day_int + " "+month
 
+    if "Cronenbourg" in buffer:
+        return Cronenbourg(buffer, date)
+    else:
+        return Illkirch(buffer, date)
+
+
+def Illkirch(buffer, date):
     # Find the html element that concern the menu of the day
     menu = buffer.find(date)
     buffer = buffer[menu:]
@@ -130,13 +134,55 @@ def parse_html(buffer):
     # Get only the menu concerning the students only
     buffer = buffer.split("SALLE")
     str = ""
-    for i in range(1, len(buffer)):
+    for i in range(0, len(buffer)):
         if buffer[i].find("ETUDIANTS") != -1:
             str += "SALLE" + buffer[i]
 
     # Remove the ":" in a room content
     if "chaude : " in str:
         str = str.replace("chaude : ", "chaude -> ")
+
+    # Check if the menu is empty
+    if str == "":
+        str = "Pas de menu disponible pour aujourd'hui !"
+
+    return str
+
+
+def Cronenbourg(buffer, date):
+    # Find the html element that concern the menu of the day
+    menu = buffer.find(date)
+    buffer = buffer[menu:]
+
+    # Get the menu of the lunch
+    menu = buffer.find("Déjeuner")
+    buffer = buffer[menu+45:]
+
+    # Get the end of the menu
+    end = buffer.find("Origin")
+    buffer = buffer[:end]
+
+    # Remove the html tags
+    buffer = buffer.replace("<span class=\"name\">",
+                            "")
+    buffer = buffer.replace("</span>", " : \n")
+    buffer = buffer.replace("<ul class=\"liste-plats\">",
+                            "")
+    buffer = buffer.replace("<li></li>", "")
+    buffer = buffer.replace("<li>", "\t")
+    buffer = buffer.replace("</li>", "\n")
+    buffer = buffer.replace("</ul>", "\n")
+    buffer = buffer.replace("<div>", "")
+    buffer = buffer.replace("</div>", "")
+
+    # Get only the menu concerning the students only
+    str = ""
+    for i in range(0, len(buffer)):
+        # Delele the é or è in the menu
+        if buffer[i] == "é" or buffer[i] == "è":
+            str += "e"
+        else:
+            str += buffer[i]
 
     # Check if the menu is empty
     if str == "":

@@ -16,9 +16,10 @@ pip install -r requirements.txt
 ## Configuration
 You need to create a file named `config.py` in the root directory of the project. This file will contain all the configuration of the bot. Here is an example of a configuration file :
 ```py
-URL     = "<The URL of the website>"
-TOKEN   = "<The token of the bot>"
-CHANNEL = "<The channel where the bot will send the menu>"
+URL_ILLKIRCH    = "<The URL of the menu of the Illkirch restaurant>"
+URL_CRONENBOURG = "<The URL of the menu of the Cronenbourg restaurant>"
+TOKEN           = "<The token of the bot>"
+CHANNEL         = "<The channel where the bot will send the menu>"
 ```
 
 > **Note:** The URL must be an URL of a Crous website. If you want to use another website, you will need to modify the code. 
@@ -31,13 +32,15 @@ python main.py
 The bot will then start, send the today's menu in the channel choosed and you can use it by typing `/menu` in a discord channel to get the list of all the available menus for the day.
 
 ## List of commands
-| Command | Description                                                                                  |
-| ------- | -------------------------------------------------------------------------------------------- |
-| `/menu` | Get the list of all the available menus for the day and the menus for tomorrow passed 14:00. |
+| Command             | Description                                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------- |
+| `/menu`             | Get the list of all the available menus for the day and the menus for tomorrow passed 14:00. |
+| `/menu illkirch`    | Get the menu of the Illkirch restaurant.                                                     |
+| `/menu cronenbourg` | Get the menu of the Cronenbourg restaurant.                                                  |
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## TODO
 - [ ] Add a command to get the menu of a specific day.
-- [ ] Add a command to get the menu of a specific RU.
+- [x] Add a command to get the menu of a specific RU.
