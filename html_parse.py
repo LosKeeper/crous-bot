@@ -178,7 +178,11 @@ def Cronenbourg(buffer, date):
     # Get only the menu concerning the students only
     str = ""
     for i in range(0, len(buffer)):
-        str += buffer[i]
+        # Delele the é or è in the menu
+        if buffer[i] == "é" or buffer[i] == "è":
+            str += "e"
+        else:
+            str += buffer[i]
 
     # Check if the menu is empty
     if str == "":

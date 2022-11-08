@@ -65,6 +65,17 @@ async def _menu(ctx: interactions.CommandContext, name: str = None):
 # Print menu at startup
 @bot.event
 async def on_start():
+    # Change presence
+    await bot.change_presence(
+        interactions.ClientPresence(
+            status=interactions.StatusType.IDLE,
+            activities=[
+                interactions.PresenceActivity(
+                    name="/menu", type=interactions.PresenceActivityType.GAME)
+            ]
+        )
+    )
+
     # When bot is ready send menu to the channel
     # Get the date
     day = datetime.now().strftime("%d")
