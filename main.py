@@ -2,7 +2,7 @@ import interactions
 from datetime import datetime
 
 # Import all the functions from the other files and variables
-from config import TOKEN, CHANNEL, URL_CRONENBOURG, URL_ILLKIRCH
+from config import TOKEN, CHANNEL, URL_CRONENBOURG, URL_ILLKIRCH, OWNER_ID
 from html_parse import *
 
 # Force tu use english month
@@ -12,6 +12,19 @@ locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 # Define the bot
 bot = interactions.Client(token=TOKEN,
                           intents=interactions.Intents.ALL)
+
+
+# Define the command /echo
+@bot.command(name="echo", description="Echo a message", options=[
+    interactions.Option(name="message", description="The message to echo",
+                        required=True, type=interactions.OptionType.STRING)])
+async def _echo(ctx: interactions.CommandContext, message: str):
+    # Check for the owner
+    if ctx.author.id != OWNER_ID:
+        return await ctx.send("You cannot do this !")
+    channel = await bot._http.get_channel(CHANNEL)
+    channel = interactions.Channel(**channel, _client=bot._http)
+    await channel.send(message)
 
 
 # Define the command /menu
@@ -68,7 +81,7 @@ async def on_start():
     # Change presence
     await bot.change_presence(
         interactions.ClientPresence(
-            status=interactions.StatusType.IDLE,
+            status=interactions.StatusType.ONLINE,
             activities=[
                 interactions.PresenceActivity(
                     name="/menu", type=interactions.PresenceActivityType.GAME)
