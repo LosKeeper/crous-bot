@@ -2,7 +2,7 @@ import interactions
 from datetime import datetime
 
 # Import all the functions from the other files and variables
-from config import TOKEN, CHANNEL, URL_CRONENBOURG, URL_ILLKIRCH, OWNER_ID
+from config import TOKEN, CHANNEL, URL_CRONENBOURG, URL_ILLKIRCH, URL_PAUL_APPELL, OWNER_ID
 from html_parse import *
 
 # Force tu use english month
@@ -31,7 +31,7 @@ async def _echo(ctx: interactions.CommandContext, message: str):
 @bot.command(name='menu', description='Print today\'s menu',
              options=[interactions.Option(
                  name='name',
-                 description='Name of the RU (Cronenbourg or Illkirch)',
+                 description='Name of the RU (Cronenbourg or Illkirch or Paul-Appell)',
                  type=interactions.OptionType.STRING,
                  required=False)])
 async def _menu(ctx: interactions.CommandContext, name: str = None):
@@ -46,6 +46,9 @@ async def _menu(ctx: interactions.CommandContext, name: str = None):
     elif name.lower() == "cronenbourg":
         name = "Cronenbourg"
         url = URL_CRONENBOURG
+    elif name.lower() == "paul-appell" or name.lower() == "paul appell" or name.lower() == "paul":
+        name = "Paul-Appell"
+        url = URL_PAUL_APPELL
     else:
         await ctx.send("This RU doesn't exist or is not supported yet !")
         return
@@ -61,7 +64,7 @@ async def _menu(ctx: interactions.CommandContext, name: str = None):
 
     # If the time is after 14h, the menu is for the next day
     hour = datetime.now().strftime("%H")
-    if int(hour)+delta_time >= 14:
+    if int(hour)+delta_time >= 14 and url != URL_PAUL_APPELL:
         day_int = int(day)+1
     else:
         day_int = int(day)

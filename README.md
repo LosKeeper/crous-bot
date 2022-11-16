@@ -18,8 +18,10 @@ You need to create a file named `config.py` in the root directory of the project
 ```py
 URL_ILLKIRCH    = "<The URL of the menu of the Illkirch restaurant>"
 URL_CRONENBOURG = "<The URL of the menu of the Cronenbourg restaurant>"
+URL_PAUL_APPELL = "<The URL of the menu of the Paul Appell restaurant>"
 TOKEN           = "<The token of the bot>"
 CHANNEL         = "<The channel where the bot will send the menu>"
+OWNER_ID        = "<The ID of the owner of the bot>"
 ```
 
 > **Note:** The URL must be an URL of a Crous website. If you want to use another website, you will need to modify the code. 
@@ -37,10 +39,12 @@ The bot will then start, send the today's menu in the channel choosed and you ca
 | `/menu`             | Get the list of all the available menus for the day and the menus for tomorrow passed 14:00. |
 | `/menu illkirch`    | Get the menu of the Illkirch restaurant.                                                     |
 | `/menu cronenbourg` | Get the menu of the Cronenbourg restaurant.                                                  |
+| `/menu paul appell` | Get the menu of the Paul Appell restaurant.                                                  |
+| `/echo <message>`   | Send a message in the channel choosed by CHANNEL_ID (only for the owner of the bot).         |
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## TODO
 - [ ] Add a command to get the menu of a specific day.
-- [x] Add a command to get the menu of a specific RU.
+- [ ] Add dictionary to siplify the commands of the bot.
