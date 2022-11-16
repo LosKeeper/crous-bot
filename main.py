@@ -46,7 +46,7 @@ async def _menu(ctx: interactions.CommandContext, name: str = None):
     elif name.lower() == "cronenbourg":
         name = "Cronenbourg"
         url = URL_CRONENBOURG
-    elif name.lower() == "paul-appell":
+    elif name.lower() == "paul-appell" or name.lower() == "paul appell" or name.lower() == "paul":
         name = "Paul-Appell"
         url = URL_PAUL_APPELL
     else:
