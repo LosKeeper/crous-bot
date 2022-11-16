@@ -3,6 +3,7 @@ import certifi
 from io import BytesIO
 from datetime import datetime
 
+from config import URL_PAUL_APPELL
 # Use to convert the time
 delta_time = 1
 
@@ -90,18 +91,32 @@ def parse_html(buffer):
     month = datetime.now().strftime("%B")
     month = EN_to_FR(month)
 
-    # If the time is after 14h, the menu is for the next day
-    hour = datetime.now().strftime("%H")
-    if int(hour)+delta_time >= 14:
-        day_int = int(day)+1
-    else:
+    if "Cronenbourg" in buffer:
+        # If the time is after 14h, the menu is for the next day
+        hour = datetime.now().strftime("%H")
+        if int(hour)+delta_time >= 14:
+            day_int = int(day)+1
+        else:
+            day_int = int(day)
+
+        date = "%s" % day_int + " "+month
+        return Cronenbourg(buffer, date)
+    elif "Paul Appell" in buffer:
+        # If the time is after 14h, the menu is for the next day
+        hour = datetime.now().strftime("%H")
         day_int = int(day)
 
-    date = "%s" % day_int + " "+month
-
-    if "Cronenbourg" in buffer:
-        return Cronenbourg(buffer, date)
+        date = "%s" % day_int + " "+month
+        return Paul_Appell(buffer, date)
     else:
+        # If the time is after 14h, the menu is for the next day
+        hour = datetime.now().strftime("%H")
+        if int(hour)+delta_time >= 14:
+            day_int = int(day)+1
+        else:
+            day_int = int(day)
+
+        date = "%s" % day_int + " "+month
         return Illkirch(buffer, date)
 
 
@@ -183,6 +198,104 @@ def Cronenbourg(buffer, date):
             str += "e"
         else:
             str += buffer[i]
+
+    # Check if the menu is empty
+    if str == "":
+        str = "Pas de menu disponible pour aujourd'hui !"
+
+    return str
+
+
+def Paul_Appell(buffer, date):
+    # Copy the buffer
+    buffer2 = BytesIO()
+    buffer2 = buffer
+
+    # Find the html element that concern the menu of the day
+    menu = buffer.find(date)
+    buffer = buffer[menu:]
+
+    # Get the menu of the lunch
+    menu = buffer.find("Déjeuner")
+    buffer = buffer[menu+45:]
+
+    # Get the end of the menu
+    end = buffer.find("Origin")
+    buffer = buffer[:end]
+
+    # Remove the html tags
+    buffer = buffer.replace("<span class=\"name\">",
+                            "\t")
+    buffer = buffer.replace("</span>", " : \n")
+    buffer = buffer.replace("<ul class=\"liste-plats\">",
+                            "")
+    buffer = buffer.replace("<li></li>", "")
+    buffer = buffer.replace("<li>", "\t\t")
+    buffer = buffer.replace("</li>", "\n")
+    buffer = buffer.replace("</ul>", "\n")
+    buffer = buffer.replace("<div>", "")
+    buffer = buffer.replace("</div>", "")
+
+    # Get only the menu concerning the students only
+    str1 = ""
+    if buffer != "":
+        str1 = "Midi : \n\n"
+        for i in range(0, len(buffer)):
+            # Delele the é or è in the menu
+            if buffer[i] == "é" or buffer[i] == "è":
+                str1 += "e"
+            elif buffer[i] == "ô":
+                str1 += "o"
+            else:
+                str1 += buffer[i]
+
+        if str1[-1] == "\t":
+            str1 = str1[:-1]
+
+    # Get the menu of the dinner
+    buffer = buffer2
+    menu = buffer.find(date)
+    buffer = buffer[menu:]
+    # Get the menu of the dinner
+    menu = buffer.find("Dîner")
+    buffer = buffer[menu+45:]
+
+    # Get the end of the menu
+    end = buffer.find("Origin")
+    buffer = buffer[:end]
+
+    # Remove the html tags
+    buffer = buffer.replace("<span class=\"name\">",
+                            "\t")
+    buffer = buffer.replace("</span>", " : \n")
+    buffer = buffer.replace("<ul class=\"liste-plats\">",
+                            "")
+    buffer = buffer.replace("<li></li>", "")
+    buffer = buffer.replace("<li>", "\t\t")
+    buffer = buffer.replace("</li>", "\n")
+    buffer = buffer.replace("</ul>", "\n")
+    buffer = buffer.replace("<div>", "")
+    buffer = buffer.replace("</div>", "")
+    buffer = buffer.replace("an class=\"name\">", "\t")
+
+    # Get only the menu concerning the students only
+    str2 = ""
+    if buffer != "":
+        str2 = "Soir : \n\n"
+        for i in range(0, len(buffer)):
+            # Delele the é or è in the menu
+            if buffer[i] == "é" or buffer[i] == "è":
+                str2 += "e"
+            elif buffer[i] == "ô":
+                str2 += "o"
+            else:
+                str2 += buffer[i]
+
+        while str2[-1] == "\t" or str2[-1] == "\n":
+            str2 = str2[:-1]
+
+    # Concatenate the two menus
+    str = str1 + str2
 
     # Check if the menu is empty
     if str == "":
