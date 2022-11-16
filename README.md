@@ -47,4 +47,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## TODO
 - [ ] Add a command to get the menu of a specific day.
-- [ ] Add dictionary to siplify the commands of the bot.
+- [ ] Add dictionary to simplify the commands of the bot.
