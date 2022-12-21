@@ -2,6 +2,7 @@ import pycurl
 import certifi
 from io import BytesIO
 from datetime import datetime
+import pytz
 
 from config import URL_PAUL_APPELL
 # Use to convert the time
@@ -83,17 +84,17 @@ def parse_html(buffer):
     """
 
     # Get the date
-    day = datetime.now().strftime("%d")
+    day = datetime.now(pytz.timezone('Europe/Paris')).strftime("%d")
 
     if day[0] == "0":
         day = day[1]
 
-    month = datetime.now().strftime("%B")
+    month = datetime.now(pytz.timezone('Europe/Paris')).strftime("%B")
     month = EN_to_FR(month)
 
     if "Cronenbourg" in buffer:
         # If the time is after 14h, the menu is for the next day
-        hour = datetime.now().strftime("%H")
+        hour = datetime.now(pytz.timezone('Europe/Paris')).strftime("%H")
         if int(hour)+delta_time >= 14:
             day_int = int(day)+1
         else:
@@ -103,14 +104,14 @@ def parse_html(buffer):
         return Cronenbourg(buffer, date)
     elif "Paul Appell" in buffer:
         # If the time is after 14h, the menu is for the next day
-        hour = datetime.now().strftime("%H")
+        hour = datetime.now(pytz.timezone('Europe/Paris')).strftime("%H")
         day_int = int(day)
 
         date = "%s" % day_int + " "+month
         return Paul_Appell(buffer, date)
     else:
         # If the time is after 14h, the menu is for the next day
-        hour = datetime.now().strftime("%H")
+        hour = datetime.now(pytz.timezone('Europe/Paris')).strftime("%H")
         if int(hour)+delta_time >= 14:
             day_int = int(day)+1
         else:

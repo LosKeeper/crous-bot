@@ -2,3 +2,4 @@ pycurl
 certifi
 discord-interactions
 datetime
+pytz

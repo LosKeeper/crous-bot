@@ -1,5 +1,6 @@
 # Discord Menu Bot Crous
 A simple bot that allows you to create menus in discord.
+> This bot uses Paris timezone.
 
 1. [Installation](#installation)
 2. [Configuration](#configuration)

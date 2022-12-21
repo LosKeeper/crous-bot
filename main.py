@@ -1,4 +1,6 @@
 import interactions
+
+import pytz
 from datetime import datetime
 
 # Import all the functions from the other files and variables
@@ -54,16 +56,16 @@ async def _menu(ctx: interactions.CommandContext, name: str = None):
         return
 
    # Get the date
-    day = datetime.now().strftime("%d")
+    day = datetime.now(pytz.timezone('Europe/Paris')).strftime("%d")
 
     if day[0] == "0":
         day = day[1]
 
-    month = datetime.now().strftime("%B")
+    month = datetime.now(pytz.timezone('Europe/Paris')).strftime("%B")
     month = EN_to_FR(month)
 
     # If the time is after 14h, the menu is for the next day
-    hour = datetime.now().strftime("%H")
+    hour = datetime.now(pytz.timezone('Europe/Paris')).strftime("%H")
     if int(hour)+delta_time >= 14 and url != URL_PAUL_APPELL:
         day_int = int(day)+1
     else:
@@ -94,16 +96,16 @@ async def on_start():
 
     # When bot is ready send menu to the channel
     # Get the date
-    day = datetime.now().strftime("%d")
+    day = datetime.now(pytz.timezone('Europe/Paris')).strftime("%d")
 
     if day[0] == "0":
         day = day[1]
 
-    month = datetime.now().strftime("%B")
+    month = datetime.now(pytz.timezone('Europe/Paris')).strftime("%B")
     month = EN_to_FR(month)
 
     # If the time is after 14h, the menu is for the next day
-    hour = datetime.now().strftime("%H")
+    hour = datetime.now(pytz.timezone('Europe/Paris')).strftime("%H")
     if int(hour)+delta_time >= 14:
         day_int = int(day)+1
     else:
