@@ -135,18 +135,10 @@ def Illkirch(buffer, date):
     buffer = buffer[:end]
 
     # Remove the html tags
-    buffer = buffer.replace("<span class=\"name\">",
-                            "")
-    buffer = buffer.replace("</span>", " : \n")
-    buffer = buffer.replace("<ul class=\"liste-plats\">",
-                            "")
-    buffer = buffer.replace("<li></li>", "")
-    buffer = buffer.replace("<li>", "\t")
     buffer = buffer.replace("</li>", "\n")
+    buffer = buffer.replace("<li>", "")
     buffer = buffer.replace("</ul>", "\n")
     buffer = buffer.replace("<ul>", "\n")
-    buffer = buffer.replace("<div>", "")
-    buffer = buffer.replace("</div>", "")
 
     # Get only the menu concerning the students only
     buffer = buffer.split("SALLE")
@@ -173,24 +165,17 @@ def Cronenbourg(buffer, date):
 
     # Get the menu of the lunch
     menu = buffer.find("Déjeuner")
-    buffer = buffer[menu+45:]
+    buffer = buffer[menu+85:]
 
     # Get the end of the menu
     end = buffer.find("Origin")
     buffer = buffer[:end]
 
     # Remove the html tags
-    buffer = buffer.replace("<span class=\"name\">",
-                            "")
-    buffer = buffer.replace("</span>", " : \n")
-    buffer = buffer.replace("<ul class=\"liste-plats\">",
-                            "")
-    buffer = buffer.replace("<li></li>", "")
-    buffer = buffer.replace("<li>", "\t")
     buffer = buffer.replace("</li>", "\n")
+    buffer = buffer.replace("<li>", "")
     buffer = buffer.replace("</ul>", "\n")
-    buffer = buffer.replace("<div>", "")
-    buffer = buffer.replace("</div>", "")
+    buffer = buffer.replace("<ul>", "\n")
 
     # Get only the menu concerning the students only
     str = ""
@@ -219,24 +204,17 @@ def Paul_Appell(buffer, date):
 
     # Get the menu of the lunch
     menu = buffer.find("Déjeuner")
-    buffer = buffer[menu+45:]
+    buffer = buffer[menu+85:]
 
     # Get the end of the menu
     end = buffer.find("Origin")
     buffer = buffer[:end]
 
     # Remove the html tags
-    buffer = buffer.replace("<span class=\"name\">",
-                            "\t")
-    buffer = buffer.replace("</span>", " : \n")
-    buffer = buffer.replace("<ul class=\"liste-plats\">",
-                            "")
-    buffer = buffer.replace("<li></li>", "")
-    buffer = buffer.replace("<li>", "\t\t")
     buffer = buffer.replace("</li>", "\n")
+    buffer = buffer.replace("<li>", "")
     buffer = buffer.replace("</ul>", "\n")
-    buffer = buffer.replace("<div>", "")
-    buffer = buffer.replace("</div>", "")
+    buffer = buffer.replace("<ul>", "\n")
 
     # Get only the menu concerning the students only
     str1 = ""
@@ -260,25 +238,17 @@ def Paul_Appell(buffer, date):
     buffer = buffer[menu:]
     # Get the menu of the dinner
     menu = buffer.find("Dîner")
-    buffer = buffer[menu+45:]
+    buffer = buffer[menu+86:]
 
     # Get the end of the menu
     end = buffer.find("Origin")
     buffer = buffer[:end]
 
     # Remove the html tags
-    buffer = buffer.replace("<span class=\"name\">",
-                            "\t")
-    buffer = buffer.replace("</span>", " : \n")
-    buffer = buffer.replace("<ul class=\"liste-plats\">",
-                            "")
-    buffer = buffer.replace("<li></li>", "")
-    buffer = buffer.replace("<li>", "\t\t")
     buffer = buffer.replace("</li>", "\n")
+    buffer = buffer.replace("<li>", "")
     buffer = buffer.replace("</ul>", "\n")
-    buffer = buffer.replace("<div>", "")
-    buffer = buffer.replace("</div>", "")
-    buffer = buffer.replace("an class=\"name\">", "\t")
+    buffer = buffer.replace("<ul>", "\n")
 
     # Get only the menu concerning the students only
     str2 = ""
