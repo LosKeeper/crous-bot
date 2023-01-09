@@ -144,6 +144,7 @@ def Illkirch(buffer, date):
     buffer = buffer.replace("<li>", "\t")
     buffer = buffer.replace("</li>", "\n")
     buffer = buffer.replace("</ul>", "\n")
+    buffer = buffer.replace("<ul>", "\n")
     buffer = buffer.replace("<div>", "")
     buffer = buffer.replace("</div>", "")
 
