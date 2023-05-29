@@ -1,51 +1,81 @@
-# Discord Menu Bot Crous
-A simple bot that allows you to create menus in discord.
-> This bot uses Paris timezone.
+# <img src="assets/icon.svg" alt="icon" width="4%"/> Discord Calendar Bot
+[![Github Version](https://img.shields.io/github/v/release/loskeeper/discord-menu-bot)](https://github.com/LosKeeper/discord-menu-bot)
+[![Github License](https://img.shields.io/github/license/loskeeper/discord-menu-bot)](https://github.com/LosKeeper/discord-menu-bot/blob/main/LICENSE)
+[![Github Last Commit](https://img.shields.io/github/last-commit/loskeeper/discord-menu-bot)](https://github.com/LosKeeper/discord-menu-bot/commits)
+[![Github Issues](https://img.shields.io/github/issues/loskeeper/discord-menu-bot)](https://github.com/LosKeeper/discord-menu-bot/issues)
 
-1. [Installation](#installation)
-2. [Configuration](#configuration)
-3. [Usage](#usage)
-4. [List of commands](#list-of-commands)
-5. [Contributing](#contributing)
-6. [TODO](#todo)
+[![Python Version](https://img.shields.io/pypi/pyversions/discord-py-interactions)](https://www.python.org/downloads/)
+[![Interactions.py Version](https://img.shields.io/badge/interactions.py-v5-green)](https://github.com/interactions-py/interactions.py)
 
-## Installation
-You first need to install all the required packages. You can do this by running the following command :
+[![Author](https://img.shields.io/badge/author-@LosKeeper-blue)](https://github.com/LosKeeper)
+> This bot is used to display the menu of the Crous in a discord channel.
+
+## 🧾 Table of Contents
+1. [🔧 Setup](#-setup)
+2. [🚀 Launch](#-launch)
+3. [📝 Commands](#-commands)
+4. [🐞 Bugs and TODO](#-bugs-and-todo)
+
+
+## 🔧 Setup
+> <picture>
+>   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/light-theme/warning.svg">
+>   <img alt="Warning" src="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/dark-theme/warning.svg">
+> </picture><br>
+>
+> You need to have installed en_US locale on your system to make the bot work.
+> If you don't have it, you can install it with the following command :
+> ```bash
+> sudo locale-gen en_US.UTF-8
+> ```
+
+Many libraries are needed to make this bot work :
 ```bash
 pip install -r requirements.txt
 ```
-## Configuration
-You need to create a file named `config.py` in the root directory of the project. This file will contain all the configuration of the bot. Here is an example of a configuration file :
-```py
-URL_ILLKIRCH    = "<The URL of the menu of the Illkirch restaurant>"
-URL_CRONENBOURG = "<The URL of the menu of the Cronenbourg restaurant>"
-URL_PAUL_APPELL = "<The URL of the menu of the Paul Appell restaurant>"
-TOKEN           = "<The token of the bot>"
-CHANNEL         = "<The channel where the bot will send the menu>"
-OWNER_ID        = "<The ID of the owner of the bot>"
+> <picture>
+>   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/light-theme/info.svg">
+>   <img alt="Info" src="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/dark-theme/info.svg">
+> </picture><br>
+>
+> If you have some troubles with the installation of the `pycurl` library, make sure to have installed the `libcurl4-openssl-dev` and the `libssl-dev` packages :
+> ```bash
+> sudo apt install libcurl4-openssl-dev libssl-dev
+> ```
+
+To configure the bot, you need to create configuration file name `.env` (you can use the `.env.example` file as a template) :
+```ini
+# URL of the menu of the restaurants
+URL_ILLKIRCH=""
+URL_CRONENBOURG=""
+URL_PAUL_APPELL=""
+
+# Token of the bot
+TOKEN=""
+
+# ID of the channel where the bot will send the menu and ID of the owner of the bot to use /echo
+CHANNEL_ID=""
+OWNER_ID=""
 ```
 
-> **Note:** The URL must be an URL of a Crous website. If you want to use another website, you will need to modify the code. 
 
-## Usage
-You can run the bot by running the following command :
+## 🚀 Launch
+To launch the bot, you need to run the `menu-bot.py` file :
 ```bash
-python main.py
+python3 menu-bot.py
 ```
-The bot will then start, send the today's menu in the channel choosed and you can use it by typing `/menu` in a discord channel to get the list of all the available menus for the day.
 
-## List of commands
-| Command             | Description                                                                                  |
-| ------------------- | -------------------------------------------------------------------------------------------- |
-| `/menu`             | Get the list of all the available menus for the day and the menus for tomorrow passed 14:00. |
-| `/menu illkirch`    | Get the menu of the Illkirch restaurant.                                                     |
-| `/menu cronenbourg` | Get the menu of the Cronenbourg restaurant.                                                  |
-| `/menu paul appell` | Get the menu of the Paul Appell restaurant.                                                  |
-| `/echo <message>`   | Send a message in the channel choosed by CHANNEL_ID (only for the owner of the bot).         |
+## 📝 Commands
+The bot use the slash commands to interact with the user.
+| Command             | Description                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------------- |
+| `/menu`             | Get the list of all the available menus for the day and the menus for tomorrow passed 14:00.            |
+| `/menu illkirch`    | Get the menu of the Illkirch restaurant.                                                                |
+| `/menu cronenbourg` | Get the menu of the Cronenbourg restaurant.                                                             |
+| `/menu paul appell` | Get the menu of the Paul Appell restaurant.                                                             |
+| `/echo <message>`   | Send a message in the channel choosed by CHANNEL_ID (only for the owner of the bot using the OWNER_ID). |
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+In adition, the bot send a message at startup with the menu of the day and the menu of tomorrow passed 14:00.
 
-## TODO
-- [ ] Add a command to get the menu of a specific day.
-- [ ] Add dictionary to simplify the commands of the bot.
+## 🐞 Bugs and TODO
+- [ ] Create auto post every morning using something else than restart the bot with cron
