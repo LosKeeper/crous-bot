@@ -82,6 +82,6 @@ The bot use the slash commands to interact with the user.
 In adition, the bot send a message at a specific time mentioned in the `.env` file with the menu of the day and the menu of tomorrow passed 14:00.
 
 ## 🐞 Bugs and TODO
--[] Add test for the bot
--[] Make code cleaner and more compact
--[] Add logs
+-[ ] Add test for the bot
+-[ ] Make code cleaner and more compact
+-[ ] Add logs
