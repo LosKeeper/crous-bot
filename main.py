@@ -22,7 +22,7 @@ bot = interactions.Client(token=env["TOKEN"],
 # Define the command /echo
 @interactions.slash_command(name="echo", description="Echo a message")
 @interactions.slash_option(name="message", description="The message to echo",
-                            required=True, opt_type=interactions.OptionType.STRING)
+                           required=True, opt_type=interactions.OptionType.STRING)
 async def _echo(ctx: interactions.SlashContext, message: str):
     # Check for the owner
     if int(ctx.author.id) != int(env["OWNER_ID"]):
@@ -37,14 +37,17 @@ async def _echo(ctx: interactions.SlashContext, message: str):
 # Define the command /menu
 @interactions.slash_command(name='menu', description='Print today\'s menu')
 @interactions.slash_option(name='name',
-                            description='Name of the RU (Cronenbourg or Illkirch or Paul-Appell)',
-                            opt_type=interactions.OptionType.STRING,
-                            choices=[
-                                interactions.SlashCommandChoice(name="Illkirch", value="Illkirch"),
-                                interactions.SlashCommandChoice(name="Cronenbourg", value="Cronenbourg"),
-                                interactions.SlashCommandChoice(name="Paul-Appell", value="Paul-Appell")
-                            ],
-                            required=True)
+                           description='Name of the RU (Cronenbourg or Illkirch or Paul-Appell)',
+                           opt_type=interactions.OptionType.STRING,
+                           choices=[
+                                interactions.SlashCommandChoice(
+                                    name="Illkirch", value="Illkirch"),
+                                interactions.SlashCommandChoice(
+                                    name="Cronenbourg", value="Cronenbourg"),
+                                interactions.SlashCommandChoice(
+                                    name="Paul-Appell", value="Paul-Appell")
+                           ],
+                           required=True)
 async def _menu(ctx: interactions.SlashContext, name: str = None):
 
     # If the user didn't specify the name of the RU
@@ -89,15 +92,8 @@ async def _menu(ctx: interactions.SlashContext, name: str = None):
     await ctx.send(embeds=embed)
 
 
-# Print menu at startup
-@interactions.listen()
-async def on_start(event: interactions.api.events.Startup):
-    # Change presence
-    await bot.change_presence(
-        activity=interactions.Activity(name="/menu", type=interactions.ActivityType.PLAYING)
-    )
-
-    # When bot is ready send menu to the channel
+@interactions.Task.create(interactions.TimeTrigger(hour=int(env["HOUR"]), minute=int(env["MINUTE"]), utc=False))
+async def _daily_menu():
     # Get the date
     day = datetime.now().strftime("%d")
 
@@ -122,6 +118,18 @@ async def on_start(event: interactions.api.events.Startup):
     embed.set_footer(text="By Thomas DUMOND",
                      icon_url="https://avatars.githubusercontent.com/u/28956167?s=400&u=195ab629066c0d1f29d6917d6479e59861349b2d&v=4")
     await channel.send(embeds=embed)
+
+
+@interactions.listen()
+async def on_start(event: interactions.api.events.Startup):
+    # Change presence
+    await bot.change_presence(
+        activity=interactions.Activity(
+            name="/menu", type=interactions.ActivityType.PLAYING)
+    )
+
+    # Start the daily menu
+    _daily_menu.start()
 
 
 bot.start()

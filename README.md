@@ -8,7 +8,7 @@
 [![Interactions.py Version](https://img.shields.io/badge/interactions.py-v5-green)](https://github.com/interactions-py/interactions.py)
 
 [![Author](https://img.shields.io/badge/author-@LosKeeper-blue)](https://github.com/LosKeeper)
-> This bot is used to display the menu of the Crous in a discord channel.
+> This bot is used to display the menu of the Crous in a discord channel and to send the menu at a specific time of the day.
 
 ## 🧾 Table of Contents
 1. [🔧 Setup](#-setup)
@@ -56,13 +56,17 @@ TOKEN=""
 # ID of the channel where the bot will send the menu and ID of the owner of the bot to use /echo
 CHANNEL_ID=""
 OWNER_ID=""
+
+# Hour of the day when the bot will send the daily message (24h format):
+HOUR=
+MINUTE=
 ```
 
 
 ## 🚀 Launch
-To launch the bot, you need to run the `menu-bot.py` file :
+To launch the bot, you need to run the `main.py` file :
 ```bash
-python3 menu-bot.py
+python3 main.py
 ```
 
 ## 📝 Commands
@@ -75,7 +79,9 @@ The bot use the slash commands to interact with the user.
 | `/menu paul appell` | Get the menu of the Paul Appell restaurant.                                                             |
 | `/echo <message>`   | Send a message in the channel choosed by CHANNEL_ID (only for the owner of the bot using the OWNER_ID). |
 
-In adition, the bot send a message at startup with the menu of the day and the menu of tomorrow passed 14:00.
+In adition, the bot send a message at a specific time mentioned in the `.env` file with the menu of the day and the menu of tomorrow passed 14:00.
 
 ## 🐞 Bugs and TODO
-- [ ] Create auto post every morning using something else than restart the bot with cron
+-[] Add test for the bot
+-[] Make code cleaner and more compact
+-[] Add logs
