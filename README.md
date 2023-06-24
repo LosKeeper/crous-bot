@@ -1,4 +1,4 @@
-# <img src="assets/icon.svg" alt="icon" width="4%"/> Discord Calendar Bot
+# <img src="assets/icon.svg" alt="icon" width="4%"/> Discord Crous Bot
 [![Github Version](https://img.shields.io/github/v/release/loskeeper/discord-menu-bot)](https://github.com/LosKeeper/discord-menu-bot)
 [![Github License](https://img.shields.io/github/license/loskeeper/discord-menu-bot)](https://github.com/LosKeeper/discord-menu-bot/blob/main/LICENSE)
 [![Github Last Commit](https://img.shields.io/github/last-commit/loskeeper/discord-menu-bot)](https://github.com/LosKeeper/discord-menu-bot/commits)
