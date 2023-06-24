@@ -4,6 +4,7 @@ from io import BytesIO
 
 from datetime import datetime
 
+
 def EN_to_FR(month):
     """Convert the english month to french month
 
@@ -126,7 +127,7 @@ def Illkirch(buffer, date):
     buffer = buffer[menu+45:]
 
     # Get the end of the menu
-    end = buffer.find("Origin")
+    end = buffer.find("SALLE DES PERSONNELS")
     buffer = buffer[:end]
 
     # Remove the html tags
