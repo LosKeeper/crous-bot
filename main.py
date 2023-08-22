@@ -94,6 +94,11 @@ async def _menu(ctx: interactions.SlashContext, name: str = None):
 
 @interactions.Task.create(interactions.TimeTrigger(hour=int(env["HOUR"]), minute=int(env["MINUTE"]), utc=False))
 async def _daily_menu():
+
+    # Don't print the menu on week-end
+    if datetime.now().weekday() in [5, 6]:
+        return
+
     # Get the date
     day = datetime.now().strftime("%d")
 
