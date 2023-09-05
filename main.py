@@ -123,7 +123,7 @@ async def _daily_menu():
     channel = await bot.fetch_channel(env["CHANNEL_ID"])
     await channel.purge(deletion_limit=10)
     embed = interactions.Embed(title="Menu RU Illkirch",
-                               description="__**"+date+"**__"+"\n```yaml\n"+print_illkirch(date, illkirch)+"```", color=0x00ff00)
+                               description="__**"+date+"**__"+"\n```yaml\n"+print_illkirch(date, json_to_dict(get_html(env["URL_API"]+"/illkirch")))+"```", color=0x00ff00)
     embed.set_footer(text="By Thomas DUMOND",
                      icon_url="https://avatars.githubusercontent.com/u/28956167?s=400&u=195ab629066c0d1f29d6917d6479e59861349b2d&v=4")
     await channel.send(embeds=embed)
