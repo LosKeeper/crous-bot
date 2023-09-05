@@ -18,11 +18,6 @@ load_dotenv()
 bot = interactions.Client(token=env["TOKEN"],
                           intents=interactions.Intents.ALL)
 
-# Define and get the json var
-illkirch = json_to_dict(get_html(env["URL_API"]+"/illkirch"))
-cronenbourg = json_to_dict(get_html(env["URL_API"]+"/cronenbourg"))
-paul_appell = json_to_dict(get_html(env["URL_API"]+"/paul-appell"))
-
 
 # Define the command /echo
 @interactions.slash_command(name="echo", description="Echo a message")
@@ -59,19 +54,19 @@ async def _menu(ctx: interactions.SlashContext, name: str = None):
     if name is None:
         name = "Illkirch"
         print_ru = print_illkirch
-        ru = illkirch
+        ru = json_to_dict(get_html(env["URL_API"]+"/illkirch"))
     elif name.lower() == "illkirch":
         name = "Illkirch"
         print_ru = print_illkirch
-        ru = illkirch
+        ru = json_to_dict(get_html(env["URL_API"]+"/illkirch"))
     elif name.lower() == "cronenbourg":
         name = "Cronenbourg"
         print_ru = print_cronenbourg
-        ru = cronenbourg
+        ru = json_to_dict(get_html(env["URL_API"]+"/cronenbourg"))
     elif name.lower() == "paul-appell" or name.lower() == "paul appell" or name.lower() == "paul":
         name = "Paul-Appell"
         print_ru = print_paul_appell
-        ru = paul_appell
+        ru = json_to_dict(get_html(env["URL_API"]+"/paul-appell"))
     else:
         await ctx.send("This RU doesn't exist or is not supported yet !")
         return
@@ -128,7 +123,7 @@ async def _daily_menu():
     channel = await bot.fetch_channel(env["CHANNEL_ID"])
     await channel.purge(deletion_limit=10)
     embed = interactions.Embed(title="Menu RU Illkirch",
-                               description="__**"+date+"**__"+"\n```yaml\n"+print_illkirch(date, illkirch)+"```", color=0x00ff00)
+                               description="__**"+date+"**__"+"\n```yaml\n"+print_illkirch(date, json_to_dict(get_html(env["URL_API"]+"/illkirch")))+"```", color=0x00ff00)
     embed.set_footer(text="By Thomas DUMOND",
                      icon_url="https://avatars.githubusercontent.com/u/28956167?s=400&u=195ab629066c0d1f29d6917d6479e59861349b2d&v=4")
     await channel.send(embeds=embed)
