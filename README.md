@@ -18,7 +18,7 @@
 
 
 ## 🔧 Setup
-This bot now work with the [API Menu Crous](https://github.com/LosKeeper/api-menu-crous) : you **need** to have it installed and running on your server.
+This bot now work with the [API Menu Crous](https://github.com/LosKeeper/api-menu-crous) : you **need** to use it to make this bot work.
 
 > <picture>
 >   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/light-theme/warning.svg">
