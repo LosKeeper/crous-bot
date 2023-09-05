@@ -18,6 +18,8 @@
 
 
 ## 🔧 Setup
+This bot now work with the [API Menu Crous](https://github.com/LosKeeper/api-menu-crous) : you **need** to use it to make this bot work.
+
 > <picture>
 >   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/light-theme/warning.svg">
 >   <img alt="Warning" src="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/dark-theme/warning.svg">
@@ -45,17 +47,15 @@ pip install -r requirements.txt
 
 To configure the bot, you need to create configuration file name `.env` (you can use the `.env.example` file as a template) :
 ```ini
-# URL of the menu of the restaurants
-URL_ILLKIRCH=""
-URL_CRONENBOURG=""
-URL_PAUL_APPELL=""
+# URL of the API with the 5000 port
+URL_API="http://<URL_API>:5000"
 
 # Token of the bot
 TOKEN=""
 
 # ID of the channel where the bot will send the menu and ID of the owner of the bot to use /echo
 CHANNEL_ID=""
-OWNER_ID=""
+OWNER_ID=
 
 # Hour of the day when the bot will send the daily message (24h format):
 HOUR=
@@ -82,6 +82,4 @@ The bot use the slash commands to interact with the user.
 In adition, the bot send a message at a specific time mentioned in the `.env` file with the menu of the day and the menu of tomorrow passed 14:00.
 
 ## 🐞 Bugs and TODO
-- [ ] Add test for the bot
-- [ ] Make code cleaner and more compact
-- [ ] Add logs
+- [ ] Add the possibility to choose the day of the menu to display

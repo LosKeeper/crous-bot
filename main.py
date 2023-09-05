@@ -5,7 +5,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from os import environ as env
 
-from html_parse import *
+from api_parse import *
 
 # Force to use english month
 import locale
@@ -53,16 +53,20 @@ async def _menu(ctx: interactions.SlashContext, name: str = None):
     # If the user didn't specify the name of the RU
     if name is None:
         name = "Illkirch"
-        url = env["URL_ILLKIRCH"]
+        print_ru = print_illkirch
+        ru = json_to_dict(get_html(env["URL_API"]+"/illkirch"))
     elif name.lower() == "illkirch":
         name = "Illkirch"
-        url = env["URL_ILLKIRCH"]
+        print_ru = print_illkirch
+        ru = json_to_dict(get_html(env["URL_API"]+"/illkirch"))
     elif name.lower() == "cronenbourg":
         name = "Cronenbourg"
-        url = env["URL_CRONENBOURG"]
+        print_ru = print_cronenbourg
+        ru = json_to_dict(get_html(env["URL_API"]+"/cronenbourg"))
     elif name.lower() == "paul-appell" or name.lower() == "paul appell" or name.lower() == "paul":
         name = "Paul-Appell"
-        url = env["URL_PAUL_APPELL"]
+        print_ru = print_paul_appell
+        ru = json_to_dict(get_html(env["URL_API"]+"/paul-appell"))
     else:
         await ctx.send("This RU doesn't exist or is not supported yet !")
         return
@@ -78,7 +82,7 @@ async def _menu(ctx: interactions.SlashContext, name: str = None):
 
     # If the time is after 14h, the menu is for the next day
     hour = datetime.now().strftime("%H")
-    if int(hour) >= 14 and url != env["URL_PAUL_APPELL"]:
+    if int(hour) >= 14 and name != "Paul-Appell":
         day_int = int(day)+1
     else:
         day_int = int(day)
@@ -86,7 +90,7 @@ async def _menu(ctx: interactions.SlashContext, name: str = None):
     date = "%s" % day_int + " "+month
 
     embed = interactions.Embed(title="Menu RU "+name,
-                               description="__**"+date+"**__"+"\n```yaml\n"+parse_html(get_html(url))+"```", color=0x00ff00)
+                               description="__**"+date+"**__"+"\n```yaml\n"+print_ru(date, ru)+"```", color=0x00ff00)
     embed.set_footer(text="By Thomas DUMOND",
                      icon_url="https://avatars.githubusercontent.com/u/28956167?s=400&u=195ab629066c0d1f29d6917d6479e59861349b2d&v=4")
     await ctx.send(embeds=embed)
@@ -119,7 +123,7 @@ async def _daily_menu():
     channel = await bot.fetch_channel(env["CHANNEL_ID"])
     await channel.purge(deletion_limit=10)
     embed = interactions.Embed(title="Menu RU Illkirch",
-                               description="__**"+date+"**__"+"\n```yaml\n"+parse_html(get_html(env["URL_ILLKIRCH"]))+"```", color=0x00ff00)
+                               description="__**"+date+"**__"+"\n```yaml\n"+print_illkirch(date, json_to_dict(get_html(env["URL_API"]+"/illkirch")))+"```", color=0x00ff00)
     embed.set_footer(text="By Thomas DUMOND",
                      icon_url="https://avatars.githubusercontent.com/u/28956167?s=400&u=195ab629066c0d1f29d6917d6479e59861349b2d&v=4")
     await channel.send(embeds=embed)
@@ -137,4 +141,5 @@ async def on_start(event: interactions.api.events.Startup):
     _daily_menu.start()
 
 
+# Start the bot
 bot.start()
