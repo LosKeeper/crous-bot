@@ -85,7 +85,7 @@ def print_illkirch(date, json_illkirch):
     # Get the corrsponding index of the date
     index = 0
     for i in range(len(json_illkirch)):
-        if date in json_illkirch[i]["date"]:
+        if date in json_illkirch[i]["title"]:
             index = i
             break
 
@@ -121,7 +121,7 @@ def print_cronenbourg(date, json_cronenbourg):
     # Get the corrsponding index of the date
     index = 0
     for i in range(len(json_cronenbourg)):
-        if date in json_cronenbourg[i]["date"]:
+        if date in json_cronenbourg[i]["title"]:
             index = i
             break
 
@@ -149,7 +149,7 @@ def print_paul_appell(date, json_paul_appell):
     # Get the corrsponding index of the date
     index = 0
     for i in range(len(json_paul_appell)):
-        if date in json_paul_appell[i]["date"]:
+        if date in json_paul_appell[i]["title"]:
             index = i
             break
 
