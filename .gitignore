@@ -4,3 +4,4 @@ config.py
 *.sh
 *.log
 .env
+test.py

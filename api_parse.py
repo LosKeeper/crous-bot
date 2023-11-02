@@ -1,35 +1,29 @@
 import pycurl
 import certifi
 from io import BytesIO
+from datetime import datetime
 
 import json
 
 
-def EN_to_FR(month):
-    """Convert the english month to french month
+# French months dict
+month_dict = {1: "Janvier", 2: "Février", 3: "Mars", 4: "Avril", 5: "Mai", 6: "Juin",
+              7: "Juillet", 8: "Août", 9: "Septembre", 10: "Octobre", 11: "Novembre", 12: "Décembre"}
 
-    Args:
-        month (str): The english month
 
-    Returns:
-        str: The french month
-    """
-    months = {
-        "January": "janvier",
-        "February": "février",
-        "March": "mars",
-        "April": "avril",
-        "May": "mai",
-        "June": "juin",
-        "July": "juillet",
-        "August": "août",
-        "September": "septembre",
-        "October": "octobre",
-        "November": "novembre",
-        "December": "décembre"
-    }
+def format_date_to_french(date_str):
+    # Convertir la date du format "YYYY-MM-DD" en un objet datetime
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d")
 
-    return months[month]
+    # Obtenir le jour, le mois et l'année
+    day = date_obj.day
+    month = month_dict[date_obj.month]
+    year = date_obj.year
+
+    # Formater la date en français
+    formatted_date = f"{day} {month} {year}"
+
+    return formatted_date
 
 
 def get_html(URL):
@@ -81,13 +75,28 @@ def json_to_dict(string):
     return json.loads(string)
 
 
-def print_illkirch(date, json_illkirch):
-    # Get the corrsponding index of the date
+def get_date_index(date, json):
+    """Get the index of the date in the json
+
+    Args:
+        date (str): The date in YYYY-MM-DD format
+        json (dict): The json
+
+    Returns:
+        int: The index
+    """
     index = 0
-    for i in range(len(json_illkirch)):
-        if date in json_illkirch[i]["title"]:
+    for i in range(len(json)):
+        if date == json[i]["date"]:
             index = i
             break
+
+    return index
+
+
+def print_illkirch(date, json_illkirch):
+    # Get the corrsponding index of the date
+    index = get_date_index(date, json_illkirch)
 
     # Make the string to return
     string = "Entrées:\n"
@@ -119,11 +128,7 @@ def print_illkirch(date, json_illkirch):
 
 def print_cronenbourg(date, json_cronenbourg):
     # Get the corrsponding index of the date
-    index = 0
-    for i in range(len(json_cronenbourg)):
-        if date in json_cronenbourg[i]["title"]:
-            index = i
-            break
+    index = get_date_index(date, json_cronenbourg)
 
     # Make the string to return
     string = "Grillade:\n"
@@ -147,11 +152,7 @@ def print_cronenbourg(date, json_cronenbourg):
 
 def print_paul_appell(date, json_paul_appell):
     # Get the corrsponding index of the date
-    index = 0
-    for i in range(len(json_paul_appell)):
-        if date in json_paul_appell[i]["title"]:
-            index = i
-            break
+    index = get_date_index(date, json_paul_appell)
 
     # Make the string to return
     string = "Déjeuner:\n"
