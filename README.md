@@ -20,17 +20,6 @@
 ## 🔧 Setup
 This bot now work with the [API Menu Crous](https://github.com/LosKeeper/api-menu-crous) : you **need** to use it to make this bot work.
 
-> <picture>
->   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/light-theme/warning.svg">
->   <img alt="Warning" src="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/dark-theme/warning.svg">
-> </picture><br>
->
-> You need to have installed en_US locale on your system to make the bot work.
-> If you don't have it, you can install it with the following command :
-> ```bash
-> sudo locale-gen en_US.UTF-8
-> ```
-
 Many libraries are needed to make this bot work :
 ```bash
 pip install -r requirements.txt
