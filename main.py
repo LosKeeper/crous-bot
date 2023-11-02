@@ -49,38 +49,25 @@ async def _menu(ctx: interactions.SlashContext, name: str = None):
     # If the user didn't specify the name of the RU
     if name is None:
         name = "Illkirch"
-        print_ru = print_illkirch
         ru = json_to_dict(get_html(env["URL_API"]+"/illkirch"))
     elif name.lower() == "illkirch":
         name = "Illkirch"
-        print_ru = print_illkirch
         ru = json_to_dict(get_html(env["URL_API"]+"/illkirch"))
     elif name.lower() == "cronenbourg":
         name = "Cronenbourg"
-        print_ru = print_cronenbourg
         ru = json_to_dict(get_html(env["URL_API"]+"/cronenbourg"))
     elif name.lower() == "paul-appell" or name.lower() == "paul appell" or name.lower() == "paul":
         name = "Paul-Appell"
-        print_ru = print_paul_appell
         ru = json_to_dict(get_html(env["URL_API"]+"/paul-appell"))
     else:
         await ctx.send("This RU doesn't exist or is not supported yet !")
         return
 
     # Get the date
-    current_date = datetime.now().strftime("%Y-%m-%d")
-
-    # If the time is after 14h, add a day to the date
-    hour = datetime.now().strftime("%H")
-    if int(hour) >= 14:
-        day_int = int(current_date[8:10])+1
-    else:
-        day_int = int(current_date[8:10])
-
-    current_date = current_date[:8]+"%s" % day_int
+    current_date = get_date()
 
     embed = interactions.Embed(title="Menu RU "+name,
-                               description="__**"+format_date_to_french(current_date)+"**__"+"\n```yaml\n"+print_ru(current_date, ru)+"```", color=0x00ff00)
+                               description="__**"+format_date_to_french(current_date)+"**__"+"\n```yaml\n"+print_lunch_diner(current_date, ru)+"```", color=0x00ff00)
     embed.set_footer(text="By Thomas DUMOND",
                      icon_url="https://avatars.githubusercontent.com/u/28956167?s=400&u=195ab629066c0d1f29d6917d6479e59861349b2d&v=4")
     await ctx.send(embeds=embed)
@@ -94,21 +81,12 @@ async def _daily_menu():
         return
 
     # Get the date
-    current_date = datetime.now().strftime("%Y-%m-%d")
-
-    # If the time is after 14h, add a day to the date
-    hour = datetime.now().strftime("%H")
-    if int(hour) >= 14:
-        day_int = int(current_date[8:10])+1
-    else:
-        day_int = int(current_date[8:10])
-
-    current_date = current_date[:8]+"%s" % day_int
+    current_date = get_date()
 
     channel = await bot.fetch_channel(env["CHANNEL_ID"])
     await channel.purge(deletion_limit=10)
     embed = interactions.Embed(title="Menu RU Illkirch",
-                               description="__**"+format_date_to_french(current_date)+"**__"+"\n```yaml\n"+print_illkirch(current_date, json_to_dict(get_html(env["URL_API"]+"/illkirch")))+"```", color=0x00ff00)
+                               description="__**"+format_date_to_french(current_date)+"**__"+"\n```yaml\n"+print_lunch_diner(current_date, json_to_dict(get_html(env["URL_API"]+"/illkirch")))+"```", color=0x00ff00)
     embed.set_footer(text="By Thomas DUMOND",
                      icon_url="https://avatars.githubusercontent.com/u/28956167?s=400&u=195ab629066c0d1f29d6917d6479e59861349b2d&v=4")
     await channel.send(embeds=embed)
