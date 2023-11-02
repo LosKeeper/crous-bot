@@ -18,7 +18,9 @@ bot = interactions.Client(token=env["TOKEN"],
 ru_dict = {
     "illkirch": "illkirch",
     "cronenbourg": "cronenbourg",
-    "paul-appell": "paul-appell"
+    "paul-appell": "paul-appell",
+    "esplanade": "esplanade",
+    "gallia": "gallia"
 }
 
 
@@ -48,7 +50,11 @@ async def _echo(ctx: interactions.SlashContext, message: str):
                                 interactions.SlashCommandChoice(
                                     name="Cronenbourg", value="Cronenbourg"),
                                 interactions.SlashCommandChoice(
-                                    name="Paul-Appell", value="Paul-Appell")
+                                    name="Paul-Appell", value="Paul-Appell"),
+                                interactions.SlashCommandChoice(
+                                    name="Esplanade", value="Esplanade"),
+                                interactions.SlashCommandChoice(
+                                    name="Gallia", value="Gallia"),
                            ],
                            required=True)
 async def _menu(ctx: interactions.SlashContext, name: str = None):

@@ -147,7 +147,7 @@ def print_lunch_diner(date, json_data):
     for meal in meals:
         string += f"\n{meal.capitalize().replace('é','e').replace('î','i')}:\n"
         for category in categories:
-            string += f"\n - {category.capitalize().replace('é','e')}:\n"
+            string += f"\n - {category.capitalize().replace('é','e').replace('è','e').replace('ô','o')}:\n"
             for plate in json_data[index][meal][category]:
                 string += f"\t{plate}\n"
 

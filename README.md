@@ -66,6 +66,8 @@ The bot use the slash commands to interact with the user.
 | `/menu illkirch`    | Get the menu of the Illkirch restaurant.                                                                |
 | `/menu cronenbourg` | Get the menu of the Cronenbourg restaurant.                                                             |
 | `/menu paul appell` | Get the menu of the Paul Appell restaurant.                                                             |
+| `/menu esplanade`   | Get the menu of the Esplanade restaurant.                                                               |
+| `/menu gallia`      | Get the menu of the Gallia restaurant.                                                                  |
 | `/echo <message>`   | Send a message in the channel choosed by CHANNEL_ID (only for the owner of the bot using the OWNER_ID). |
 
 In adition, the bot send a message at a specific time mentioned in the `.env` file with the menu of the day and the menu of tomorrow passed 14:00.
