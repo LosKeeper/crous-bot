@@ -1,35 +1,57 @@
 import pycurl
 import certifi
 from io import BytesIO
+from datetime import datetime, timedelta
 
 import json
 
 
-def EN_to_FR(month):
-    """Convert the english month to french month
+# French months dict
+month_dict = {1: "Janvier", 2: "Février", 3: "Mars", 4: "Avril", 5: "Mai", 6: "Juin",
+              7: "Juillet", 8: "Août", 9: "Septembre", 10: "Octobre", 11: "Novembre", 12: "Décembre"}
+
+
+def format_date_to_french(date_str):
+    """Format a date string to french
+
+    Need month_dict to be defined
 
     Args:
-        month (str): The english month
+        date_str (str): The date string in YYYY-MM-DD format
 
     Returns:
-        str: The french month
+        str: The date string in french
     """
-    months = {
-        "January": "janvier",
-        "February": "février",
-        "March": "mars",
-        "April": "avril",
-        "May": "mai",
-        "June": "juin",
-        "July": "juillet",
-        "August": "août",
-        "September": "septembre",
-        "October": "octobre",
-        "November": "novembre",
-        "December": "décembre"
-    }
+    # Convert the date string to a datetime object
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d")
 
-    return months[month]
+    day = date_obj.day
+    month = month_dict[date_obj.month]
+    year = date_obj.year
+
+    # Format the date
+    formatted_date = f"{day} {month} {year}"
+
+    return formatted_date
+
+
+def get_date():
+    """Get the date in YYYY-MM-DD format, if the time is after 14h, add a day to the date
+
+    Returns:
+        str: The date in YYYY-MM-DD format
+    """
+    # Get the date
+    current_date = datetime.now()
+
+    # If the time is after 14h, add a day to the date
+    if current_date.hour >= 14:
+        current_date += timedelta(days=1)
+
+    # Format the date to YYYY-MM-DD
+    current_date_str = current_date.strftime("%Y-%m-%d")
+
+    return current_date_str
 
 
 def get_html(URL):
@@ -81,111 +103,52 @@ def json_to_dict(string):
     return json.loads(string)
 
 
-def print_illkirch(date, json_illkirch):
-    # Get the corrsponding index of the date
+def get_date_index(date, json):
+    """Get the index of the date in the json
+
+    Args:
+        date (str): The date in YYYY-MM-DD format
+        json (dict): The json
+
+    Returns:
+        int: The index
+    """
     index = 0
-    for i in range(len(json_illkirch)):
-        if date in json_illkirch[i]["title"]:
+    for i in range(len(json)):
+        if date == json[i]["date"]:
             index = i
             break
 
-    # Make the string to return
-    string = "Entrées:\n"
-    for plate in json_illkirch[index]["Déjeuner"]["ENTREES"]:
-        string += "\t"+plate+"\n"
-
-    string += "\nMenu du jour:\n"
-    for plate in json_illkirch[index]["Déjeuner"]["MENU DU JOUR"]:
-        string += "\t"+plate+"\n"
-
-    string += "\nMenu végétarien:\n"
-    for plate in json_illkirch[index]["Déjeuner"]["MENU VEGETARIEN"]:
-        string += "\t"+plate+"\n"
-
-    string += "\nPole pates:\n"
-    for plate in json_illkirch[index]["Déjeuner"]["POLE PATES"]:
-        string += "\t"+plate+"\n"
-
-    string += "\nGrill:\n"
-    for plate in json_illkirch[index]["Déjeuner"]["GRILL"]:
-        string += "\t"+plate+"\n"
-
-    string += "\nDesserts:\n"
-    for plate in json_illkirch[index]["Déjeuner"]["DESSERTS"]:
-        string += "\t"+plate+"\n"
-
-    return string
+    return index
 
 
-def print_cronenbourg(date, json_cronenbourg):
+def print_lunch_diner(date, json_data):
+    """Print the menu of the RU for lunch and diner
+
+    Args:
+        date (str): The date in YYYY-MM-DD format
+        json_cronenbourg (JSON): The json of the RU
+
+    Returns:
+        str: The string to print
+    """
+
     # Get the corrsponding index of the date
-    index = 0
-    for i in range(len(json_cronenbourg)):
-        if date in json_cronenbourg[i]["title"]:
-            index = i
-            break
+    index = get_date_index(date, json_data)
+
+    # Get the categories from the json
+    categories = json_data[index]["Déjeuner"].keys()
+    meals = ["Déjeuner"]
+    if "Dîner" in json_data[index].keys():
+        meals.append("Dîner")
 
     # Make the string to return
-    string = "Grillade:\n"
-    for plate in json_cronenbourg[index]["Déjeuner"]["Grillade"]:
-        string += "\t"+plate+"\n"
-
-    string += "\nPlat du jour:\n"
-    for plate in json_cronenbourg[index]["Déjeuner"]["Plat du jour"]:
-        string += "\t"+plate+"\n"
-
-    string += "\nVégétarien:\n"
-    for plate in json_cronenbourg[index]["Déjeuner"]["Végétarien"]:
-        string += "\t"+plate+"\n"
-
-    string += "\nExtension:\n"
-    for plate in json_cronenbourg[index]["Déjeuner"]["Extension"]:
-        string += "\t"+plate+"\n"
-
-    return string
-
-
-def print_paul_appell(date, json_paul_appell):
-    # Get the corrsponding index of the date
-    index = 0
-    for i in range(len(json_paul_appell)):
-        if date in json_paul_appell[i]["title"]:
-            index = i
-            break
-
-    # Make the string to return
-    string = "Déjeuner:\n"
-    string += "\n - Pôle végétal:\n"
-    for plate in json_paul_appell[index]["Déjeuner"]["Pôle végétal"]:
-        string += "\t"+plate+"\n"
-
-    string += "\n - Flam and Co:\n"
-    for plate in json_paul_appell[index]["Déjeuner"]["Flam and Co"]:
-        string += "\t"+plate+"\n"
-
-    string += "\n - Plat du jour:\n"
-    for plate in json_paul_appell[index]["Déjeuner"]["Plat du jour"]:
-        string += "\t"+plate+"\n"
-
-    string += "\n - Annexe:\n"
-    for plate in json_paul_appell[index]["Déjeuner"]["Annexe"]:
-        string += "\t"+plate+"\n"
-
-    string += "\nDîner:\n"
-    string += "\n - Pôle végétal:\n"
-    for plate in json_paul_appell[index]["Dîner"]["Pôle végétal"]:
-        string += "\t"+plate+"\n"
-
-    string += "\n - Flam and Co:\n"
-    for plate in json_paul_appell[index]["Dîner"]["Flam and Co"]:
-        string += "\t"+plate+"\n"
-
-    string += "\n - Plat du jour:\n"
-    for plate in json_paul_appell[index]["Dîner"]["Plat du jour"]:
-        string += "\t"+plate+"\n"
-
-    string += "\n - Annexe:\n"
-    for plate in json_paul_appell[index]["Dîner"]["Annexe"]:
-        string += "\t"+plate+"\n"
+    string = ""
+    for meal in meals:
+        string += f"\n{meal.capitalize().replace('é','e').replace('î','i')}:\n"
+        for category in categories:
+            string += f"\n - {category.capitalize().replace('é','e').replace('è','e').replace('ô','o')}:\n"
+            for plate in json_data[index][meal][category]:
+                string += f"\t{plate}\n"
 
     return string

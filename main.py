@@ -7,16 +7,21 @@ from os import environ as env
 
 from api_parse import *
 
-# Force to use english month
-import locale
-locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
-
 # Load the .env file
 load_dotenv()
 
 # Define the bot
 bot = interactions.Client(token=env["TOKEN"],
                           intents=interactions.Intents.ALL)
+
+# Define the available RUs
+ru_dict = {
+    "illkirch": "illkirch",
+    "cronenbourg": "cronenbourg",
+    "paul-appell": "paul-appell",
+    "esplanade": "esplanade",
+    "gallia": "gallia"
+}
 
 
 # Define the command /echo
@@ -45,52 +50,23 @@ async def _echo(ctx: interactions.SlashContext, message: str):
                                 interactions.SlashCommandChoice(
                                     name="Cronenbourg", value="Cronenbourg"),
                                 interactions.SlashCommandChoice(
-                                    name="Paul-Appell", value="Paul-Appell")
+                                    name="Paul-Appell", value="Paul-Appell"),
+                                interactions.SlashCommandChoice(
+                                    name="Esplanade", value="Esplanade"),
+                                interactions.SlashCommandChoice(
+                                    name="Gallia", value="Gallia"),
                            ],
                            required=True)
 async def _menu(ctx: interactions.SlashContext, name: str = None):
 
-    # If the user didn't specify the name of the RU
-    if name is None:
-        name = "Illkirch"
-        print_ru = print_illkirch
-        ru = json_to_dict(get_html(env["URL_API"]+"/illkirch"))
-    elif name.lower() == "illkirch":
-        name = "Illkirch"
-        print_ru = print_illkirch
-        ru = json_to_dict(get_html(env["URL_API"]+"/illkirch"))
-    elif name.lower() == "cronenbourg":
-        name = "Cronenbourg"
-        print_ru = print_cronenbourg
-        ru = json_to_dict(get_html(env["URL_API"]+"/cronenbourg"))
-    elif name.lower() == "paul-appell" or name.lower() == "paul appell" or name.lower() == "paul":
-        name = "Paul-Appell"
-        print_ru = print_paul_appell
-        ru = json_to_dict(get_html(env["URL_API"]+"/paul-appell"))
-    else:
-        await ctx.send("This RU doesn't exist or is not supported yet !")
-        return
+    # Get the data from the API corresponding to the wanted RU
+    ru = json_to_dict(get_html(env["URL_API"]+"/"+ru_dict[name.lower()]))
 
-   # Get the date
-    day = datetime.now().strftime("%d")
-
-    if day[0] == "0":
-        day = day[1]
-
-    month = datetime.now().strftime("%B")
-    month = EN_to_FR(month)
-
-    # If the time is after 14h, the menu is for the next day
-    hour = datetime.now().strftime("%H")
-    if int(hour) >= 14 and name != "Paul-Appell":
-        day_int = int(day)+1
-    else:
-        day_int = int(day)
-
-    date = "%s" % day_int + " "+month
+    # Get the date
+    current_date = get_date()
 
     embed = interactions.Embed(title="Menu RU "+name,
-                               description="__**"+date+"**__"+"\n```yaml\n"+print_ru(date, ru)+"```", color=0x00ff00)
+                               description="__**"+format_date_to_french(current_date)+"**__"+"\n```yaml\n"+print_lunch_diner(current_date, ru)+"```", color=0x00ff00)
     embed.set_footer(text="By Thomas DUMOND",
                      icon_url="https://avatars.githubusercontent.com/u/28956167?s=400&u=195ab629066c0d1f29d6917d6479e59861349b2d&v=4")
     await ctx.send(embeds=embed)
@@ -104,26 +80,12 @@ async def _daily_menu():
         return
 
     # Get the date
-    day = datetime.now().strftime("%d")
+    current_date = get_date()
 
-    if day[0] == "0":
-        day = day[1]
-
-    month = datetime.now().strftime("%B")
-    month = EN_to_FR(month)
-
-    # If the time is after 14h, the menu is for the next day
-    hour = datetime.now().strftime("%H")
-    if int(hour) >= 14:
-        day_int = int(day)+1
-    else:
-        day_int = int(day)
-
-    date = "%s" % day_int + " "+month
     channel = await bot.fetch_channel(env["CHANNEL_ID"])
     await channel.purge(deletion_limit=10)
     embed = interactions.Embed(title="Menu RU Illkirch",
-                               description="__**"+date+"**__"+"\n```yaml\n"+print_illkirch(date, json_to_dict(get_html(env["URL_API"]+"/illkirch")))+"```", color=0x00ff00)
+                               description="__**"+format_date_to_french(current_date)+"**__"+"\n```yaml\n"+print_lunch_diner(current_date, json_to_dict(get_html(env["URL_API"]+"/illkirch")))+"```", color=0x00ff00)
     embed.set_footer(text="By Thomas DUMOND",
                      icon_url="https://avatars.githubusercontent.com/u/28956167?s=400&u=195ab629066c0d1f29d6917d6479e59861349b2d&v=4")
     await channel.send(embeds=embed)
