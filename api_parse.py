@@ -51,8 +51,6 @@ def get_date():
     # Format the date to YYYY-MM-DD
     current_date_str = current_date.strftime("%Y-%m-%d")
 
-    print(current_date_str)
-
     return current_date_str
 
 

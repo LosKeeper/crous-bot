@@ -14,6 +14,13 @@ load_dotenv()
 bot = interactions.Client(token=env["TOKEN"],
                           intents=interactions.Intents.ALL)
 
+# Define the available RUs
+ru_dict = {
+    "illkirch": "illkirch",
+    "cronenbourg": "cronenbourg",
+    "paul-appell": "paul-appell"
+}
+
 
 # Define the command /echo
 @interactions.slash_command(name="echo", description="Echo a message")
@@ -46,22 +53,8 @@ async def _echo(ctx: interactions.SlashContext, message: str):
                            required=True)
 async def _menu(ctx: interactions.SlashContext, name: str = None):
 
-    # If the user didn't specify the name of the RU
-    if name is None:
-        name = "Illkirch"
-        ru = json_to_dict(get_html(env["URL_API"]+"/illkirch"))
-    elif name.lower() == "illkirch":
-        name = "Illkirch"
-        ru = json_to_dict(get_html(env["URL_API"]+"/illkirch"))
-    elif name.lower() == "cronenbourg":
-        name = "Cronenbourg"
-        ru = json_to_dict(get_html(env["URL_API"]+"/cronenbourg"))
-    elif name.lower() == "paul-appell" or name.lower() == "paul appell" or name.lower() == "paul":
-        name = "Paul-Appell"
-        ru = json_to_dict(get_html(env["URL_API"]+"/paul-appell"))
-    else:
-        await ctx.send("This RU doesn't exist or is not supported yet !")
-        return
+    # Get the data from the API corresponding to the wanted RU
+    ru = json_to_dict(get_html(env["URL_API"]+"/"+ru_dict[name.lower()]))
 
     # Get the date
     current_date = get_date()
