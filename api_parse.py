@@ -12,15 +12,24 @@ month_dict = {1: "Janvier", 2: "Février", 3: "Mars", 4: "Avril", 5: "Mai", 6: "
 
 
 def format_date_to_french(date_str):
-    # Convertir la date du format "YYYY-MM-DD" en un objet datetime
+    """Format a date string to french
+
+    Need month_dict to be defined
+
+    Args:
+        date_str (str): The date string in YYYY-MM-DD format
+
+    Returns:
+        str: The date string in french
+    """
+    # Convert the date string to a datetime object
     date_obj = datetime.strptime(date_str, "%Y-%m-%d")
 
-    # Obtenir le jour, le mois et l'année
     day = date_obj.day
     month = month_dict[date_obj.month]
     year = date_obj.year
 
-    # Formater la date en français
+    # Format the date
     formatted_date = f"{day} {month} {year}"
 
     return formatted_date
@@ -95,6 +104,15 @@ def get_date_index(date, json):
 
 
 def print_illkirch(date, json_illkirch):
+    """Print the menu of the RU Illkirch
+
+    Args:
+        date (str): The date in YYYY-MM-DD format
+        json_illkirch (JSON): The json of the RU Illkirch
+
+    Returns:
+        str: The string to print
+    """
     # Get the corrsponding index of the date
     index = get_date_index(date, json_illkirch)
 
@@ -127,6 +145,16 @@ def print_illkirch(date, json_illkirch):
 
 
 def print_cronenbourg(date, json_cronenbourg):
+    """Print the menu of the RU Cronenbourg
+
+    Args:
+        date (str): The date in YYYY-MM-DD format
+        json_cronenbourg (JSON): The json of the RU Cronenbourg
+
+    Returns:
+        str: The string to print
+    """
+
     # Get the corrsponding index of the date
     index = get_date_index(date, json_cronenbourg)
 
@@ -151,6 +179,16 @@ def print_cronenbourg(date, json_cronenbourg):
 
 
 def print_paul_appell(date, json_paul_appell):
+    """Print the menu of the RU Paul-Appell
+
+    Args:
+        date (str): The date in YYYY-MM-DD format
+        json_cronenbourg (JSON): The json of the RU Cronenbourg
+
+    Returns:
+        str: The string to print
+    """
+
     # Get the corrsponding index of the date
     index = get_date_index(date, json_paul_appell)
 
